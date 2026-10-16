@@ -26,8 +26,16 @@ export function NameForm() {
         router.replace("/home");
       }}
     >
-      <Field label="내 이름">
-        <TextInput value={name} onChange={(e) => setName(e.target.value)} maxLength={30} autoFocus required />
+      <Field label="내 이름" hint="예: 김민수">
+        <TextInput
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          maxLength={30}
+          autoComplete="name"
+          placeholder="김민수"
+          autoFocus
+          required
+        />
       </Field>
       <ErrorText>{error}</ErrorText>
       <Button type="submit" disabled={busy || !name.trim()}>
