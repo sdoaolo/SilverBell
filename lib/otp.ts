@@ -11,6 +11,7 @@ import { phoneHash } from "./crypto/phone";
 import { db } from "./db";
 import { ERR } from "./messages";
 import { deliver } from "./notify/provider";
+import { solapiProvider } from "./notify/solapi";
 
 export type OtpPurpose = "login" | "senior_verify" | "guardian_invite";
 
@@ -61,7 +62,8 @@ export async function sendOtp(
     .single();
   if (insertError) throw insertError;
 
-  const sent = await deliver("sms", phone, makeText(code));
+  // 확인 코드는 DEMO_MODE와 상관없이 실제 문자로 보낸다 (코드를 콘솔에 찍지 않기 위해, ALLOW_PHONES 검사는 유지)
+  const sent = await deliver("sms", phone, makeText(code), solapiProvider);
   if (sent.status === "failed" || sent.status === "skipped") {
     // 보내지 못한 코드는 지워서 쿨다운·횟수에 넣지 않는다
     await db().from("otp_codes").delete().eq("id", row.id);

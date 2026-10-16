@@ -2,7 +2,8 @@
 import type { MessageProvider, SendResult } from "./provider";
 
 function log(kind: string, to: string, text: string): SendResult {
-  console.log(`[demo ${kind}] 010-****-${to.slice(-4)}: ${text}`);
+  // 확인 번호 같은 숫자가 로그에 남지 않도록 4자리 이상 숫자는 가린다
+  console.log(`[demo ${kind}] 010-****-${to.slice(-4)}: ${text.replace(/\d{4,}/g, (m) => "*".repeat(m.length))}`);
   return { ok: true, messageId: `demo-${Date.now()}` };
 }
 
