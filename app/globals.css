@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+/* 어르신·보호자 화면: 흰 바탕 + 진한 글자, 기본 글자 20px */
+:root {
+  --background: #ffffff;
+  --foreground: #111111;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+html {
+  font-size: 20px;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+}
