@@ -1,7 +1,10 @@
 import { z } from "zod";
-import { ok, parseJson, requireActor, serverError } from "@/lib/api";
+import { fail, ok, parseJson, requireActor, serverError } from "@/lib/api";
 import { maskPhone } from "@/lib/crypto/phone";
 import { db } from "@/lib/db";
+import { nameField } from "@/lib/schemas";
+import { withdrawUser } from "@/lib/seniors";
+import { endSession } from "@/lib/session";
 
 export async function GET() {
   const auth = await requireActor();
@@ -15,9 +18,7 @@ export async function GET() {
   });
 }
 
-const Patch = z.object({
-  name: z.string().trim().min(1, "이름을 입력해 주세요").max(30, "이름은 30자까지 쓸 수 있어요"),
-});
+const Patch = z.object({ name: nameField });
 
 export async function PATCH(req: Request) {
   const auth = await requireActor();
@@ -27,6 +28,20 @@ export async function PATCH(req: Request) {
   try {
     const { error } = await db().from("users").update({ name: parsed.data.name }).eq("id", auth.actor.id);
     if (error) throw error;
+    return ok({ ok: true });
+  } catch (e) {
+    return serverError(e);
+  }
+}
+
+/** 탈퇴: 내 계정 삭제 (마지막 super_admin은 불가) */
+export async function DELETE() {
+  const auth = await requireActor();
+  if ("response" in auth) return auth.response;
+  try {
+    const result = await withdrawUser(auth.actor.id);
+    if (!result.ok) return fail(result.error);
+    await endSession();
     return ok({ ok: true });
   } catch (e) {
     return serverError(e);

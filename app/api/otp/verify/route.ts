@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { fail, ok, parseJson, serverError } from "@/lib/api";
 import { ensureBootstrapAdmin } from "@/lib/authz";
-import { normalizePhone } from "@/lib/crypto/phone";
+import { normalizePhone, phoneHash } from "@/lib/crypto/phone";
 import { db } from "@/lib/db";
 import { ERR } from "@/lib/messages";
 import { verifyOtp } from "@/lib/otp";
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
   const phone = normalizePhone(parsed.data.phone);
   if (!phone) return fail(ERR.phoneInvalid);
   try {
-    const result = await verifyOtp(phone, "login", parsed.data.code.trim());
+    const result = await verifyOtp(phoneHash(phone), "login", parsed.data.code.trim());
     if (!result.ok) return fail(result.error);
 
     // 처음 통과한 번호면 계정을 만든다 (별도 가입 화면 없음)

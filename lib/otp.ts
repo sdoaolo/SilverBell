@@ -17,10 +17,12 @@ export type OtpPurpose = "login" | "senior_verify" | "guardian_invite";
 
 type Result = { ok: true } | { ok: false; error: string };
 
-function codeHash(phone: string, code: string): string {
+// sha256(번호 + 코드 + OTP_PEPPER). 번호 자리에는 phone_hash를 쓴다
+// → 어르신·보호자 확인 코드를 검증할 때 저장된 번호를 복호화하지 않아도 된다.
+function codeHash(hashOfPhone: string, code: string): string {
   const pepper = process.env.OTP_PEPPER;
   if (!pepper) throw new Error("OTP_PEPPER를 설정하세요");
-  return createHash("sha256").update(phone + code + pepper).digest("hex");
+  return createHash("sha256").update(hashOfPhone + code + pepper).digest("hex");
 }
 
 /**
@@ -55,7 +57,7 @@ export async function sendOtp(
     .insert({
       phone_hash: hash,
       purpose,
-      code_hash: codeHash(phone, code),
+      code_hash: codeHash(hash, code),
       expires_at: new Date(Date.now() + OTP_TTL_MS).toISOString(),
     })
     .select("id")
@@ -72,14 +74,17 @@ export async function sendOtp(
   return { ok: true };
 }
 
-/** 최신 미사용 코드와 비교. 실패하면 시도 횟수 +1, 성공하면 used_at 기록 */
-export async function verifyOtp(phone: string, purpose: OtpPurpose, code: string): Promise<Result> {
+/**
+ * 최신 미사용 코드와 비교. 실패하면 시도 횟수 +1, 성공하면 used_at 기록.
+ * hashOfPhone은 phoneHash(번호) 값 (users·seniors의 phone_hash 그대로 사용 가능).
+ */
+export async function verifyOtp(hashOfPhone: string, purpose: OtpPurpose, code: string): Promise<Result> {
   if (!/^\d{6}$/.test(code)) return { ok: false, error: ERR.otpWrong };
 
   const { data: row, error } = await db()
     .from("otp_codes")
     .select("id, code_hash, expires_at, attempts")
-    .eq("phone_hash", phoneHash(phone))
+    .eq("phone_hash", hashOfPhone)
     .eq("purpose", purpose)
     .is("used_at", null)
     .order("created_at", { ascending: false })
@@ -91,7 +96,7 @@ export async function verifyOtp(phone: string, purpose: OtpPurpose, code: string
   }
 
   const expected = Buffer.from(row.code_hash, "hex");
-  const actual = Buffer.from(codeHash(phone, code), "hex");
+  const actual = Buffer.from(codeHash(hashOfPhone, code), "hex");
   if (expected.length !== actual.length || !timingSafeEqual(expected, actual)) {
     await db().from("otp_codes").update({ attempts: row.attempts + 1 }).eq("id", row.id);
     return { ok: false, error: ERR.otpWrong };

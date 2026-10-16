@@ -81,6 +81,14 @@ export function voiceTest(): string {
   return "복지관 알림 테스트 전화입니다.";
 }
 
+// 알림 방법 표시 문구
+export const CHANNEL_LABEL = {
+  voice: "전화 (음성 안내)",
+  sms: "문자",
+  both: "전화와 문자 둘 다",
+  none: "받지 않기",
+} as const;
+
 // 화면·API 오류 문구
 export const ERR = {
   phoneInvalid: "전화번호를 다시 확인해 주세요",
@@ -93,4 +101,8 @@ export const ERR = {
   notFound: "찾을 수 없어요",
   badInput: "입력값을 다시 확인해 주세요",
   loginRequired: "다시 로그인해 주세요",
+  agreeRequired: "개인정보 수집·이용에 동의해 주세요",
+  tooManyGuardians: (max: number) => `보호자는 어르신 한 분당 ${max}명까지 등록할 수 있어요`,
+  alreadyGuardian: "이미 등록된 보호자예요",
+  lastSuperAdmin: "마지막 최고 관리자는 탈퇴할 수 없어요. 먼저 다른 최고 관리자를 지정해 주세요",
 } as const;
