@@ -26,7 +26,7 @@ export function NameForm() {
         router.replace("/home");
       }}
     >
-      <Field label="내 이름" hint="예: 김민수">
+      <Field label="보호자 이름" hint="예: 김민수">
         <TextInput
           value={name}
           onChange={(e) => setName(e.target.value)}
