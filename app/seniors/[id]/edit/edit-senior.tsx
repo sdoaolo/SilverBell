@@ -15,7 +15,7 @@ const MY_OPTIONS = (["sms", "voice", "both", "none"] as const).map((v) => ({ val
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="flex flex-col gap-4 border-t-2 border-gray-300 pt-6">
+    <section className="flex flex-col gap-4 border-t-2 border-line pt-6">
       <h2 className="text-2xl font-bold">{title}</h2>
       {children}
     </section>
@@ -139,7 +139,7 @@ export function EditSenior({
       <Section title="알림 받는 복지관">
         {subs.length === 0 && <p className="text-xl">고른 복지관이 없어요.</p>}
         {subs.map((s) => (
-          <div key={s.centerId} className="flex flex-col gap-3 rounded-xl bg-gray-100 p-3">
+          <div key={s.centerId} className="flex flex-col gap-3 rounded-xl bg-brand-50 p-3">
             <p className="text-xl font-bold">{s.name}</p>
             <ConfirmAction
               trigger="그만 받기"

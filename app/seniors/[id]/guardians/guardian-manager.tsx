@@ -72,12 +72,12 @@ function GuardianCard({ g, base, canManage, isOwner }: { g: Guardian; base: stri
   const url = `${base}/${g.userId}`;
 
   return (
-    <section className="flex flex-col gap-3 rounded-2xl border-2 border-gray-800 p-4">
+    <section className="flex flex-col gap-3 rounded-3xl border border-line bg-white p-5 shadow-xs">
       <h2 className="text-2xl font-bold">
         {g.name ?? "이름 없음"}
         {g.isMe && " (나)"}
       </h2>
-      <p className="text-lg text-gray-700">
+      <p className="text-lg text-muted">
         {g.phone} · {g.relation === "owner" ? "대표 보호자" : "보호자"} · {CHANNEL_LABEL[g.channel]}
       </p>
 
@@ -143,7 +143,7 @@ function AddGuardian({ base, onClose }: { base: string; onClose: () => void }) {
 
   if (added) {
     return (
-      <section className="flex flex-col gap-4 rounded-2xl border-4 border-blue-700 p-4">
+      <section className="flex flex-col gap-4 rounded-2xl border-4 border-brand-600 p-4">
         <h2 className="text-2xl font-bold">{name} 님 번호 확인</h2>
         {added.sendError ? (
           <ErrorText>{added.sendError}</ErrorText>
@@ -165,7 +165,7 @@ function AddGuardian({ base, onClose }: { base: string; onClose: () => void }) {
 
   return (
     <form
-      className="flex flex-col gap-5 rounded-2xl border-4 border-blue-700 p-4"
+      className="flex flex-col gap-5 rounded-2xl border-4 border-brand-600 p-4"
       onSubmit={async (e) => {
         e.preventDefault();
         setBusy(true);

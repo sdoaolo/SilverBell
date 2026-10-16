@@ -21,7 +21,7 @@ async function Members() {
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 py-6 text-base">
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">관리자 관리</h1>
-        <Link href="/admin" className="text-sm font-semibold text-blue-800 underline">
+        <Link href="/admin" className="text-sm font-semibold text-brand-700 underline">
           관리자 화면으로
         </Link>
       </header>

@@ -38,7 +38,7 @@ export function SettingsForm({ initialName }: { initialName: string }) {
         </Button>
       </form>
 
-      <section className="flex flex-col gap-3 border-t-2 border-gray-300 pt-6">
+      <section className="flex flex-col gap-3 border-t-2 border-line pt-6">
         <h2 className="text-2xl font-bold">탈퇴</h2>
         <p className="text-xl leading-relaxed">
           내 계정이 지워져요. 내가 유일한 보호자인 어르신은 함께 지워지고, 다른 보호자가 있는 어르신은 연결만 끊겨요.

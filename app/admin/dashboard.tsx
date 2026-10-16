@@ -115,14 +115,14 @@ export function AdminDashboard({ canCreateCenter, canDeleteCenter }: { canCreate
   ];
   return (
     <div className="flex flex-col gap-4">
-      <div role="tablist" className="flex flex-wrap gap-2 border-b border-gray-300 pb-2">
+      <div role="tablist" className="flex flex-wrap gap-2 border-b border-line pb-2">
         {tabs.map((t) => (
           <button
             key={t.id}
             role="tab"
             aria-selected={tab === t.id}
             onClick={() => setTab(t.id)}
-            className={`rounded-lg px-4 py-2 text-sm font-bold ${tab === t.id ? "bg-blue-700 text-white" : "bg-gray-100"}`}
+            className={`rounded-lg px-4 py-2 text-sm font-bold ${tab === t.id ? "bg-brand-600 text-white" : "bg-brand-50"}`}
           >
             {t.label}
           </button>
@@ -158,7 +158,7 @@ function PeriodList({ status }: { status: "pending" | "confirmed" }) {
       )}
       <AError>{error}</AError>
       {data?.items.length === 0 && (
-        <p className="text-sm text-gray-700">{status === "pending" ? "확인할 기간이 없어요." : "확정된 기간이 없어요."}</p>
+        <p className="text-sm text-muted">{status === "pending" ? "확인할 기간이 없어요." : "확정된 기간이 없어요."}</p>
       )}
       {data?.items.map((p) => (
         <PeriodCard key={p.id} p={p} onChange={reload} />
@@ -195,12 +195,12 @@ function PeriodCard({ p, onChange }: { p: Period; onChange: () => void }) {
   const remind = addDays(p.apply_start, -3);
 
   return (
-    <article className="flex flex-col gap-2 rounded-xl border border-gray-400 p-4 text-sm">
+    <article className="flex flex-col gap-2 rounded-xl border border-line p-4 text-sm">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h3 className="text-base font-bold">
           {p.centerName} · {p.label}
         </h3>
-        <span className="text-gray-700">
+        <span className="text-muted">
           {p.phase === "open" ? "신청 기간 중" : p.phase === "before" ? "시작 전" : "끝남"}
           {!p.centerActive && " · 비활성 복지관"}
         </span>
@@ -209,13 +209,13 @@ function PeriodCard({ p, onChange }: { p: Period; onChange: () => void }) {
         신청 {range(p)} · 방법: {p.method || "모름"}
       </p>
       {p.status === "pending" && (
-        <p className="text-gray-700">
+        <p className="text-muted">
           AI가 읽은 것: {p.notice?.source ? SOURCE_LABEL[p.notice.source] : "직접 입력·붙여넣기"}
           {p.confidence !== null && ` · 신뢰도 ${Math.round(p.confidence * 100)}%`}
           {p.notice && (
             <>
               {" · "}
-              <a href={p.notice.url} target="_blank" rel="noreferrer" className="text-blue-800 underline">
+              <a href={p.notice.url} target="_blank" rel="noreferrer" className="text-brand-700 underline">
                 원문 보기{p.notice.title ? `: ${p.notice.title}` : ""}
               </a>
             </>
@@ -223,7 +223,7 @@ function PeriodCard({ p, onChange }: { p: Period; onChange: () => void }) {
         </p>
       )}
       {p.status === "confirmed" && (
-        <ul className="text-gray-800">
+        <ul className="text-ink">
           <li>
             3일 전 알림:{" "}
             {p.d3SentAt ? `보냄 ${fmtDateTime(p.d3SentAt)}` : `${fmtDate(remind)} 09:00 예정`}
@@ -320,7 +320,7 @@ function PeriodLogs({ periodId }: { periodId: string }) {
   return (
     <div className="flex flex-col gap-2 overflow-x-auto">
       <AError>{error}</AError>
-      {data?.items.length === 0 && <p className="text-gray-700">발송 내역이 없어요.</p>}
+      {data?.items.length === 0 && <p className="text-muted">발송 내역이 없어요.</p>}
       {data && data.items.length > 0 && (
         <table className="w-full min-w-[36rem] text-left text-xs">
           <thead>
@@ -367,7 +367,7 @@ function PeriodForm({ period, onSaved, onCancel }: { period?: Period; onSaved: (
 
   return (
     <form
-      className="flex flex-col gap-3 rounded-lg bg-gray-50 p-3"
+      className="flex flex-col gap-3 rounded-lg bg-brand-50 p-3"
       onSubmit={async (e) => {
         e.preventDefault();
         setBusy(true);
@@ -396,7 +396,7 @@ function PeriodForm({ period, onSaved, onCancel }: { period?: Period; onSaved: (
           <AInput type="date" value={end} onChange={(e) => setEnd(e.target.value)} />
         </ALabel>
       </div>
-      {!period && <p className="text-xs text-gray-700">직접 추가한 기간은 확인 대기로 들어가요. 확정해야 알림이 가요.</p>}
+      {!period && <p className="text-xs text-muted">직접 추가한 기간은 확인 대기로 들어가요. 확정해야 알림이 가요.</p>}
       <AError>{error}</AError>
       <div className="flex gap-2">
         <AButton tone="primary" type="submit" disabled={busy || (!period && !centerId)}>
@@ -427,7 +427,7 @@ export function CenterSelect({ value, onChange }: { value: string; onChange: (id
       </ALabel>
       <ALabel label="복지관">
         <select
-          className="min-h-10 rounded-lg border border-gray-500 px-2 text-sm"
+          className="min-h-10 rounded-lg border border-zinc-300 px-2 text-sm"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           required
@@ -485,7 +485,7 @@ function CentersPanel({ canCreate, canDelete }: { canCreate: boolean; canDelete:
         />
       )}
       <AError>{error}</AError>
-      {data?.items.length === 0 && <p className="text-sm text-gray-700">복지관이 없어요.</p>}
+      {data?.items.length === 0 && <p className="text-sm text-muted">복지관이 없어요.</p>}
       {data?.items.map((c) => (
         <CenterCard key={c.id} c={c} canDelete={canDelete} onChange={reload} />
       ))}
@@ -506,19 +506,19 @@ function CenterCard({ c, canDelete, onChange }: { c: Center; canDelete: boolean;
   }
 
   return (
-    <article className="flex flex-col gap-2 rounded-xl border border-gray-400 p-4 text-sm">
+    <article className="flex flex-col gap-2 rounded-xl border border-line p-4 text-sm">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h3 className="text-base font-bold">
           {c.name} {!c.is_active && <span className="text-red-700">(비활성)</span>}
         </h3>
-        <span className="text-gray-700">
+        <span className="text-muted">
           {[c.sido, c.sigungu].filter(Boolean).join(" ")} · 구독 {c.subscribers}명
         </span>
       </div>
-      <p className="break-all text-gray-700">
+      <p className="break-all text-muted">
         공지 게시판: {c.notice_url || "없음"} · 전화: {c.phone || "없음"}
       </p>
-      <p className="text-gray-700">
+      <p className="text-muted">
         마지막 확인: {c.last_checked_at ? fmtDateTime(c.last_checked_at) : "아직 없음"}
         {c.last_check_error && <span className="text-red-700"> · {c.last_check_error}</span>}
       </p>
@@ -583,7 +583,7 @@ function CenterForm({ center, onSaved, onCancel }: { center?: Center; onSaved: (
 
   return (
     <form
-      className="flex flex-col gap-3 rounded-lg bg-gray-50 p-3"
+      className="flex flex-col gap-3 rounded-lg bg-brand-50 p-3"
       onSubmit={async (e) => {
         e.preventDefault();
         setBusy(true);
@@ -630,14 +630,14 @@ function PastePanel({ onDone }: { onDone: () => void }) {
 
   return (
     <section className="flex flex-col gap-3 text-sm">
-      <p className="text-gray-700">
+      <p className="text-muted">
         게시판을 자동으로 읽지 못할 때, 공지 글을 붙여넣거나 포스터 이미지(jpg·png·webp, 최대 4장)를 올리면 AI가 신청
         기간을 뽑아 확인 대기에 넣어요. 올린 이미지는 저장하지 않아요.
       </p>
       <CenterSelect value={centerId} onChange={setCenterId} />
       <ALabel label="공지 글">
         <textarea
-          className="min-h-48 rounded-lg border border-gray-500 p-3 text-sm"
+          className="min-h-48 rounded-lg border border-zinc-300 p-3 text-sm"
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="공지 본문을 붙여넣으세요"

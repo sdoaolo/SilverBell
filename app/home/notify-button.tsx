@@ -40,7 +40,7 @@ export function NotifyButton({ seniorId, periodId }: { seniorId: string; periodI
       </Button>
       <ErrorText>{error}</ErrorText>
       {result && (
-        <p role="status" className="text-xl font-bold text-green-800">
+        <p role="status" className="text-xl font-bold text-brand-700">
           {result}
         </p>
       )}

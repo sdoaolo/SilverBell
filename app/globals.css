@@ -1,23 +1,58 @@
 @import "tailwindcss";
 
-/* 어르신·보호자 화면: 흰 바탕 + 진한 글자, 기본 글자 20px */
+/* 복지관 효도알림 디자인 토큰 (세이지 그린 + 남색) */
+@theme {
+  --color-brand-50: #f3f6f4;
+  --color-brand-100: #edf2ee;
+  --color-brand-200: #d2ddd6;
+  --color-brand-300: #b5d2c1;
+  --color-brand-400: #7fa690;
+  --color-brand-500: #628f77;
+  --color-brand-600: #567f69;
+  --color-brand-700: #456b57;
+  --color-brand-800: #335041;
+  --color-navy-800: #1c2945;
+  --color-navy-900: #111a2e;
+  --color-surface: #f6f6f7;
+  --color-line: #e7e7ea;
+  --color-ink: #111827;
+  --color-muted: #4b5563;
+  --font-sans: var(--font-noto-sans-kr), "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #111111;
   color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-}
-
+/* 어르신·보호자 화면 기본 글자 20px. 글자 크기 조절: 크게 22.5px, 아주크게 25px */
 html {
   font-size: 20px;
+  word-break: keep-all;
+  scroll-behavior: smooth;
+}
+html[data-zoom="large"] {
+  font-size: 22.5px;
+}
+html[data-zoom="xlarge"] {
+  font-size: 25px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+@keyframes pulse-ring {
+  0%,
+  100% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.3;
+  }
+}
+.animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

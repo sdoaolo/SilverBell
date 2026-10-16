@@ -29,7 +29,7 @@ export function Choices<T extends string>({
             aria-checked={selected}
             onClick={() => onChange(o.value)}
             className={`flex min-h-14 w-full items-center gap-3 rounded-xl border-2 px-4 text-left text-xl font-bold ${
-              selected ? "border-blue-700 bg-blue-50 text-blue-900" : "border-gray-400 bg-white text-gray-900"
+              selected ? "border-brand-600 bg-brand-50 text-brand-800" : "border-line bg-white text-ink"
             }`}
           >
             <span aria-hidden className="text-2xl">
@@ -57,7 +57,7 @@ export function useSaved(): [boolean, () => void] {
 export function SavedText({ show }: { show: boolean }) {
   if (!show) return null;
   return (
-    <p role="status" className="text-xl font-bold text-green-800">
+    <p role="status" className="text-xl font-bold text-brand-700">
       저장했어요
     </p>
   );
@@ -81,13 +81,13 @@ export function ConfirmAction({
 
   if (!open) {
     return (
-      <Button variant="secondary" className="border-red-700 text-red-800" onClick={() => setOpen(true)}>
+      <Button variant="secondary" className="border-red-300 text-red-800" onClick={() => setOpen(true)}>
         {trigger}
       </Button>
     );
   }
   return (
-    <div role="alertdialog" className="flex flex-col gap-4 rounded-xl border-4 border-red-700 p-4">
+    <div role="alertdialog" className="flex flex-col gap-4 rounded-3xl border-4 border-red-600 bg-white p-4">
       <p className="text-xl font-bold leading-relaxed">{message}</p>
       <ErrorText>{error}</ErrorText>
       <Button
@@ -162,7 +162,7 @@ export function CodeForm({
         />
       </Field>
       <ErrorText>{error}</ErrorText>
-      {info && <p className="text-xl text-green-800">{info}</p>}
+      {info && <p className="text-xl text-brand-700">{info}</p>}
       <Button type="submit" disabled={busy || code.length !== 6}>
         {busy ? "확인 중…" : "확인"}
       </Button>

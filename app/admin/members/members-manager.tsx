@@ -51,7 +51,7 @@ function RolePicker({
     <>
       <ALabel label="역할">
         <select
-          className="min-h-10 rounded-lg border border-gray-500 px-2 text-sm"
+          className="min-h-10 rounded-lg border border-zinc-300 px-2 text-sm"
           value={role}
           onChange={(e) => onRole(e.target.value as Role)}
         >
@@ -118,7 +118,7 @@ function MemberRow({ m, isMe, onChange }: { m: Member; isMe: boolean; onChange: 
   return (
     <tr className="border-b align-top">
       <td className="py-2">
-        {m.name ?? <span className="text-gray-600">아직 로그인 전</span>}
+        {m.name ?? <span className="text-muted">아직 로그인 전</span>}
         {isMe && " (나)"}
       </td>
       <td>{m.phone}</td>
@@ -195,7 +195,7 @@ function AddMember({ onAdded }: { onAdded: () => void }) {
   }
   return (
     <form
-      className="flex flex-col gap-3 rounded-lg bg-gray-50 p-3"
+      className="flex flex-col gap-3 rounded-lg bg-brand-50 p-3"
       onSubmit={async (e) => {
         e.preventDefault();
         setBusy(true);
@@ -226,7 +226,7 @@ function AddMember({ onAdded }: { onAdded: () => void }) {
         </ALabel>
         <RolePicker role={role} centerId={centerId} onRole={setRole} onCenter={setCenterId} />
       </div>
-      <p className="text-xs text-gray-700">
+      <p className="text-xs text-muted">
         추가한 번호로 &ldquo;관리자로 추가되었어요&rdquo; 문자가 가요. 시연 중에는 그 번호가 ALLOW_PHONES에 있어야 로그인할 수 있어요.
       </p>
       <AError>{error}</AError>

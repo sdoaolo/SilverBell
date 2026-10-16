@@ -96,14 +96,14 @@ export function CenterPicker({ seniorId, initialSubscribed }: { seniorId: string
                 disabled={busyId === c.id}
                 onClick={() => toggle(c.id)}
                 className={`flex min-h-16 w-full items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left ${
-                  on ? "border-blue-700 bg-blue-50" : "border-gray-400 bg-white"
+                  on ? "border-brand-600 bg-brand-50" : "border-line bg-white"
                 }`}
               >
                 <span className="flex flex-col">
                   <span className="text-xl font-bold">{c.name}</span>
-                  {region(c) && <span className="text-lg text-gray-700">{region(c)}</span>}
+                  {region(c) && <span className="text-lg text-muted">{region(c)}</span>}
                 </span>
-                <span className={`shrink-0 text-xl font-bold ${on ? "text-blue-800" : "text-gray-600"}`}>
+                <span className={`shrink-0 text-xl font-bold ${on ? "text-brand-700" : "text-muted"}`}>
                   {on ? "✔ 받는 중" : "받기"}
                 </span>
               </button>

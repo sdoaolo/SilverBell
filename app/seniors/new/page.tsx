@@ -147,7 +147,7 @@ export default function NewSeniorPage() {
 
   return (
     <Page title="개인정보 수집·이용 동의">
-      <dl className="flex flex-col gap-3 rounded-xl bg-gray-100 p-4 text-xl leading-relaxed">
+      <dl className="flex flex-col gap-3 rounded-xl bg-brand-50 p-4 text-xl leading-relaxed">
         <div>
           <dt className="font-bold">수집 항목</dt>
           <dd>이름, 전화번호</dd>
@@ -161,7 +161,7 @@ export default function NewSeniorPage() {
           <dd>탈퇴하거나 등록을 삭제할 때까지. 삭제하면 바로 지워져요</dd>
         </div>
       </dl>
-      <label className="flex min-h-14 items-center gap-4 rounded-xl border-2 border-gray-800 px-4 text-xl font-bold">
+      <label className="flex min-h-14 items-center gap-4 rounded-2xl border-2 border-line bg-white px-4 text-xl font-bold">
         <input type="checkbox" className="h-7 w-7" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
         동의합니다
       </label>

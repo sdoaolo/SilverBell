@@ -8,8 +8,8 @@ export function AButton({
   ...props
 }: ComponentProps<"button"> & { tone?: "default" | "primary" | "danger" }) {
   const tones = {
-    default: "border border-gray-500 bg-white text-gray-900 hover:bg-gray-50",
-    primary: "bg-blue-700 text-white hover:bg-blue-800",
+    default: "border border-zinc-300 bg-white text-ink hover:bg-brand-50",
+    primary: "bg-brand-600 text-white hover:bg-brand-700",
     danger: "bg-red-700 text-white hover:bg-red-800",
   };
   return (
@@ -21,7 +21,7 @@ export function AButton({
 }
 
 export function AInput(props: ComponentProps<"input">) {
-  return <input className="min-h-10 w-full rounded-lg border border-gray-500 px-3 text-sm" {...props} />;
+  return <input className="min-h-10 w-full rounded-lg border border-zinc-300 px-3 text-sm" {...props} />;
 }
 
 export function ALabel({ label, children }: { label: string; children: ReactNode }) {
@@ -40,7 +40,7 @@ export function AError({ children }: { children: ReactNode }) {
 
 export function ANote({ children }: { children: ReactNode }) {
   if (!children) return null;
-  return <p className="text-sm font-semibold text-green-800">{children}</p>;
+  return <p className="text-sm font-semibold text-brand-700">{children}</p>;
 }
 
 /** 확인 창 버튼: 누르면 문구 + 확인/취소 */
