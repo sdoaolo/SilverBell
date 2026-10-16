@@ -8,6 +8,7 @@ import { koMonthDay, slashMonthDay, todaySeoul } from "@/lib/dates";
 import { CHANNEL_LABEL, hasValue } from "@/lib/messages";
 import { requirePageActor } from "@/lib/page-guard";
 import { getHomeData, type HomeCenter, type HomeSenior } from "@/lib/seniors";
+import { NotifyButton } from "./notify-button";
 
 export default function HomePage() {
   return (
@@ -64,7 +65,7 @@ function SeniorCard({ senior: s }: { senior: HomeSenior }) {
       ) : (
         <ul className="flex flex-col gap-3">
           {s.centers.map((c) => (
-            <CenterRow key={c.centerId} c={c} />
+            <CenterRow key={c.centerId} c={c} seniorId={s.id} canNotify={s.verified} />
           ))}
         </ul>
       )}
@@ -84,7 +85,7 @@ function SeniorCard({ senior: s }: { senior: HomeSenior }) {
   );
 }
 
-function CenterRow({ c }: { c: HomeCenter }) {
+function CenterRow({ c, seniorId, canNotify }: { c: HomeCenter; seniorId: string; canNotify: boolean }) {
   const p = c.period;
   if (!p) {
     return (
@@ -113,6 +114,7 @@ function CenterRow({ c }: { c: HomeCenter }) {
       {hasValue(p.method) && <p>신청 방법: {p.method}</p>}
       <p>3일 전 알림: {schedule(p.remindAt, p.remindSent)}</p>
       <p>시작일 알림: {schedule(p.applyStart, p.startSent)}</p>
+      {canNotify && <NotifyButton seniorId={seniorId} periodId={p.id} />}
     </li>
   );
 }
