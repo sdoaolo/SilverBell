@@ -90,4 +90,9 @@ export const PeriodBody = z
   })
   .refine((p) => !p.apply_end || p.apply_end >= p.apply_start, "마감일이 시작일보다 빨라요");
 
-export const PeriodIdBody = z.object({ periodId: z.string().refine(isUuid, "기간을 찾을 수 없어요") });
+export const RoleBody = z.object({
+  role: z.enum(["super_admin", "admin", "center_manager"], { error: "역할을 골라 주세요" }),
+  centerId: z.string().refine(isUuid, "담당 복지관을 골라 주세요").nullish(),
+});
+
+export const PeriodIdBody =z.object({ periodId: z.string().refine(isUuid, "기간을 찾을 수 없어요") });

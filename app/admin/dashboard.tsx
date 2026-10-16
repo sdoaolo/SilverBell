@@ -410,7 +410,7 @@ function PeriodForm({ period, onSaved, onCancel }: { period?: Period; onSaved: (
   );
 }
 
-function CenterSelect({ value, onChange }: { value: string; onChange: (id: string) => void }) {
+export function CenterSelect({ value, onChange }: { value: string; onChange: (id: string) => void }) {
   const [q, setQ] = useState("");
   const [centers, setCenters] = useState<Center[]>([]);
   useEffect(() => {

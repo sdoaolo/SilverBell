@@ -7,6 +7,7 @@ import { can, getActor } from "@/lib/authz";
 import { maskPhone } from "@/lib/crypto/phone";
 import { formatSeoulDateTime } from "@/lib/dates";
 import { AdminDashboard } from "./dashboard";
+import { RunJobButton } from "./run-job-button";
 
 const ROLE_LABEL = { super_admin: "최고 관리자", admin: "관리자", center_manager: "복지관 담당자" } as const;
 
@@ -23,14 +24,15 @@ async function AdminHome() {
   if (!actor) redirect("/login");
   if (!(await can(actor, "admin.access"))) notFound();
 
-  const [canCreateCenter, canDeleteCenter, canManageAdmins, canReadAudit, lastJob] = await Promise.all([
+  // center.delete는 담당자에게 없으므로 복지관 지정 없이 판단해도 된다
+  const [canCreateCenter, canDeleteCenter, canManageAdmins, canReadAudit, canRunJob, lastJob] = await Promise.all([
     can(actor, "center.create"),
     can(actor, "center.delete", { centerId: null }),
     can(actor, "admin.manage"),
     can(actor, "audit.read"),
+    can(actor, "job.run"),
     latestJobRun(),
   ]);
-  // center.delete는 담당자에게 없으므로 복지관 지정 없이 판단해도 된다
   const s = (lastJob?.summary ?? null) as Record<string, number | boolean> | null;
 
   return (
@@ -50,20 +52,21 @@ async function AdminHome() {
         </nav>
       </header>
 
-      <section className="rounded-xl border border-gray-400 p-4 text-sm">
-        <h2 className="mb-1 font-bold">마지막 자동 작업</h2>
+      <section className="flex flex-col gap-2 rounded-xl border border-gray-400 p-4 text-sm">
+        <h2 className="font-bold">마지막 자동 작업</h2>
         {lastJob ? (
           <p>
             {formatSeoulDateTime(lastJob.started_at)} ({lastJob.triggered_by === "cron" ? "자동" : "수동"}) ·{" "}
             {lastJob.error
               ? `오류: ${lastJob.error}`
               : s
-                ? `발송 성공 ${s.sent ?? 0} · 실패 ${s.failed ?? 0} · 확인한 복지관 ${s.centersChecked ?? 0} · 새 공지 ${s.newNotices ?? 0}${s.hasMore ? " · 남은 작업 있음" : ""}`
+                ? `발송 성공 ${Number(s.sent ?? 0) + Number(s.demo ?? 0)} · 실패 ${s.failed ?? 0} · 이미 보냄 ${s.already ?? 0} · 확인한 복지관 ${s.centersChecked ?? 0} · 새 공지 ${s.newNotices ?? 0}${s.hasMore ? " · 남은 작업 있음" : ""}`
                 : "진행 중"}
           </p>
         ) : (
           <p>아직 실행 기록이 없어요.</p>
         )}
+        {canRunJob && <RunJobButton />}
       </section>
 
       <AdminDashboard canCreateCenter={canCreateCenter} canDeleteCenter={canDeleteCenter} />

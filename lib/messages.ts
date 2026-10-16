@@ -105,4 +105,5 @@ export const ERR = {
   tooManyGuardians: (max: number) => `보호자는 어르신 한 분당 ${max}명까지 등록할 수 있어요`,
   alreadyGuardian: "이미 등록된 보호자예요",
   lastSuperAdmin: "마지막 최고 관리자는 탈퇴할 수 없어요. 먼저 다른 최고 관리자를 지정해 주세요",
+  alreadyAdmin: "이미 그 역할을 가진 관리자예요",
 } as const;
