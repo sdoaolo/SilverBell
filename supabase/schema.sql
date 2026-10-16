@@ -188,3 +188,9 @@ alter table subscriptions enable row level security;
 alter table notification_logs enable row level security;
 alter table audit_logs enable row level security;
 alter table job_runs enable row level security;
+
+-- 서버(service_role)에만 테이블 권한을 준다. anon·authenticated(브라우저)에는 주지 않는다.
+-- (최근 Supabase 프로젝트는 SQL로 만든 테이블에 API 역할 권한을 자동으로 주지 않음)
+grant usage on schema public to service_role;
+grant select, insert, update, delete on all tables in schema public to service_role;
+revoke all on all tables in schema public from anon, authenticated;
